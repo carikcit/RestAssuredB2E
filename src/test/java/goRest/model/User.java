@@ -1,3 +1,5 @@
+package goRest.model;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class User {
@@ -69,7 +71,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "goRest.model.User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +

@@ -1,3 +1,6 @@
+package goRest;
+
+import goRest.model.User;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
@@ -52,12 +55,12 @@ public class GoRestUsersTests {
         int code = extract.jsonPath().getInt("code");
         System.out.println("Code: " + code);
 
-//        List<User> userList = extract.jsonPath().getList("data", User.class);
-//        for (User user : userList) {
+//        List<goRest.model.User> userList = extract.jsonPath().getList("data", goRest.model.User.class);
+//        for (goRest.model.User user : userList) {
 //            System.out.println(user);
 //        }
 
-//        User[] data = extract.jsonPath().getObject("data", User[].class);
+//        goRest.model.User[] data = extract.jsonPath().getObject("data", goRest.model.User[].class);
 //        for (int i = 0; i < data.length; i++) {
 //            System.out.println(data[i]);
 //        }
@@ -102,7 +105,7 @@ public class GoRestUsersTests {
 
     @Test(dependsOnMethods = "createUser")
     public void updateUserById(){
-        String updateText = "Update User Test";
+        String updateText = "Update goRest.model.User Test";
         RestAssured.given()
                 .header("Authorization", "Bearer 55b19d86844d95532f80c9a2103e1a3af0aea11b96817e6a1861b0d6532eef47")
                 .contentType(ContentType.JSON)
