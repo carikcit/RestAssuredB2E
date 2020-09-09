@@ -1,10 +1,9 @@
-package goRest;
-
-import goRest.model.User;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class GoRestUsersTests {
 
     @Test()
     public void getUsers() {
-        List<User> userList = given()
+        List<User> userList = RestAssured.given()
                 .when()
                 .get("https://gorest.co.in/public-api/users")
                 .then()
@@ -26,8 +25,8 @@ public class GoRestUsersTests {
                 //assertions
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("code", equalTo(200))
-                .body("data", not(empty()))
+                .body("code", Matchers.equalTo(200))
+                .body("data", Matchers.not(Matchers.empty()))
                 //extracting users list
                 .extract().jsonPath().getList("data", User.class);
 
@@ -38,15 +37,15 @@ public class GoRestUsersTests {
 
     @Test(enabled = false)
     public void getUsersExtactingMultipleTimes() {
-        ExtractableResponse<Response> extract = given()
+        ExtractableResponse<Response> extract = RestAssured.given()
                 .when()
                 .get("https://gorest.co.in/public-api/users")
                 .then()
                 //assertions
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("code", equalTo(200))
-                .body("data", not(empty()))
+                .body("code", Matchers.equalTo(200))
+                .body("data", Matchers.not(Matchers.empty()))
                 //extracting users list
                 .extract();
 
@@ -70,7 +69,7 @@ public class GoRestUsersTests {
 
     @Test()
     public void createUser() {
-        userId = given()
+        userId = RestAssured.given()
                 // prerequisite data
                 .header("Authorization", "Bearer 55b19d86844d95532f80c9a2103e1a3af0aea11b96817e6a1861b0d6532eef47")
                 .contentType(ContentType.JSON)
@@ -82,29 +81,29 @@ public class GoRestUsersTests {
                 //validations
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("code", equalTo(201))
+                .body("code", Matchers.equalTo(201))
                 .extract().jsonPath().getInt("data.id");
         ;
     }
 
     @Test(dependsOnMethods = "createUser")
     public void getUserById() {
-        given()
+        RestAssured.given()
                 .pathParam("userId", userId)
                 .when()
                 .get("https://gorest.co.in/public-api/users/{userId}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("code", equalTo(200))
-                .body("data.id", equalTo(userId))
+                .body("code", Matchers.equalTo(200))
+                .body("data.id", Matchers.equalTo(userId))
         ;
     }
 
     @Test(dependsOnMethods = "createUser")
     public void updateUserById(){
         String updateText = "Update User Test";
-        given()
+        RestAssured.given()
                 .header("Authorization", "Bearer 55b19d86844d95532f80c9a2103e1a3af0aea11b96817e6a1861b0d6532eef47")
                 .contentType(ContentType.JSON)
                 .body("{\"name\": \""+updateText+"\"}")
@@ -113,33 +112,33 @@ public class GoRestUsersTests {
                 .put("https://gorest.co.in/public-api/users/{userId}")
                 .then()
                 .statusCode(200)
-                .body("code", equalTo(200))
-                .body("data.name", equalTo(updateText));
+                .body("code", Matchers.equalTo(200))
+                .body("data.name", Matchers.equalTo(updateText));
     }
 
     @Test(dependsOnMethods = "createUser", priority = 1)
     public void deleteUserById(){
-        given()
+        RestAssured.given()
                 .header("Authorization", "Bearer 55b19d86844d95532f80c9a2103e1a3af0aea11b96817e6a1861b0d6532eef47")
                 .pathParam("userId",userId)
                 .when()
                 .delete("https://gorest.co.in/public-api/users/{userId}")
                 .then()
                 .statusCode(200)
-                .body("code", equalTo(204))
+                .body("code", Matchers.equalTo(204))
         ;
     }
 
     @Test(dependsOnMethods = "deleteUserById")
     public void getUserByIdNegative() {
-        given()
+        RestAssured.given()
                 .pathParam("userId", userId)
                 .when()
                 .get("https://gorest.co.in/public-api/users/{userId}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("code", equalTo(404))
+                .body("code", Matchers.equalTo(404))
         ;
     }
 
