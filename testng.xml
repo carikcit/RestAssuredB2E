@@ -4,7 +4,8 @@
 <suite name="Jenkins default suite">
     <test name="Main test">
         <classes>
-            <class name="basqar.CountryTest"></class>
+            <class name="goRest.GoRestPostsTests"></class>
+            <class name="goRest.GoRestUsersTests"></class>
         </classes>
     </test>
 </suite>
