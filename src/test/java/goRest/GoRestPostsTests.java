@@ -134,4 +134,5 @@ public class GoRestPostsTests {
     private Integer getRandomUserId() {
         return new Random().nextInt(10) + 1;
     }
+
 }

@@ -6,7 +6,7 @@
         <classes>
             <class name="goRest.GoRestUsersTests"></class>
             <class name="goRest.GoRestPostsTests"></class>
-            
+
         </classes>
     </test>
 </suite>
